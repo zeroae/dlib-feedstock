@@ -3,15 +3,21 @@ c_compiler:
 c_compiler_version:
 - '7'
 channel_sources:
-- conda-forge,defaults
+- zeroae,conda-forge,defaults
 channel_targets:
-- conda-forge main
+- zeroae main
+cuda_compiler:
+- nvcc
+cuda_compiler_version:
+- '10.1'
+cudnn:
+- 7.6.5
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '7'
 docker_image:
-- condaforge/linux-anvil-comp7
+- condaforge/linux-anvil-cuda:10.1
 jpeg:
 - '9'
 libcblas:
@@ -21,8 +27,11 @@ liblapack:
 libpng:
 - '1.6'
 numpy:
-- '1.16'
+- '1.18'
 pin_run_as_build:
+  cudnn:
+    min_pin: x.x
+    max_pin: x
   jpeg:
     max_pin: x
   libpng:
@@ -33,11 +42,15 @@ pin_run_as_build:
   sqlite:
     max_pin: x
 python:
-- 3.6.* *_cpython
+- 3.6.* *_73_pypy
 sqlite:
 - '3'
 target_platform:
 - linux-64
 zip_keys:
+- - c_compiler_version
+  - cxx_compiler_version
+- - cuda_compiler_version
+  - docker_image
 - - numpy
   - python
