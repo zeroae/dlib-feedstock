@@ -17,7 +17,7 @@ source:
 
 build:
   skip: true  # [win and py<35]
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage('dlib', max_pin='x.x') }}
 
@@ -26,6 +26,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
+{% if cuda_compiler_version != "None" %}
+    - {{ compiler('cuda') }}
+{% endif %}
   host:
     - jpeg
     - libcblas  # [not win]
@@ -36,6 +39,15 @@ requirements:
     - pybind11
     - python
     - sqlite  # [not win]
+{% if cuda_compiler_version == "None" %}
+    - _dlib_mutex * cpu
+{% else %}
+    - _dlib_mutex * cuda
+    - cudnn
+  run_constrained:
+    - __cuda {{ cuda_compiler_version }}
+{% endif %}
+
   run:
     - {{ pin_compatible('numpy') }}
     - python
