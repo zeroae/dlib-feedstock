@@ -1,0 +1,65 @@
+From a5e7fbc2d5f9985a7c953b3641f6892d515871cc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Patrick=20Sodr=C3=A9?= <psodre@gmail.com>
+Date: Sat, 10 Oct 2020 02:05:01 -0400
+Subject: [PATCH 4/5] Update CUDA tests
+
+---
+ dlib/cmake_utils/test_for_cuda/CMakeLists.txt  | 9 +++++----
+ dlib/cmake_utils/test_for_cudnn/CMakeLists.txt | 9 ++++-----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/dlib/cmake_utils/test_for_cuda/CMakeLists.txt b/dlib/cmake_utils/test_for_cuda/CMakeLists.txt
+index 1826348c..a71dc2eb 100644
+--- a/dlib/cmake_utils/test_for_cuda/CMakeLists.txt
++++ b/dlib/cmake_utils/test_for_cuda/CMakeLists.txt
+@@ -1,14 +1,15 @@
+ 
+-cmake_minimum_required(VERSION 2.8.12)
++cmake_minimum_required(VERSION 3.18)
+ project(cuda_test)
++enable_language(CUDA)
++set(CMAKE_CUDA_ARCHITECTURES "50")
+ 
+ include_directories(../../cuda)
+ add_definitions(-DDLIB_USE_CUDA)
+ 
+ # Override the FindCUDA.cmake setting to avoid duplication of host flags if using a toolchain:
+ option(CUDA_PROPAGATE_HOST_FLAGS "Propage C/CXX_FLAGS and friends to the host compiler via -Xcompile" OFF)
+-find_package(CUDA 7.5 REQUIRED)
+ set(CUDA_HOST_COMPILATION_CPP ON)
+-list(APPEND CUDA_NVCC_FLAGS "-arch=sm_50;-std=c++11;-D__STRICT_ANSI__;-D_MWAITXINTRIN_H_INCLUDED;-D_FORCE_INLINES")
++list(APPEND CMAKE_CUDA_FLAGS "-std=c++11 -D__STRICT_ANSI__ -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES")
+ 
+-cuda_add_library(cuda_test STATIC cuda_test.cu )
++add_library(cuda_test STATIC cuda_test.cu )
+diff --git a/dlib/cmake_utils/test_for_cudnn/CMakeLists.txt b/dlib/cmake_utils/test_for_cudnn/CMakeLists.txt
+index 0d0d6616..84ec56db 100644
+--- a/dlib/cmake_utils/test_for_cudnn/CMakeLists.txt
++++ b/dlib/cmake_utils/test_for_cudnn/CMakeLists.txt
+@@ -1,19 +1,18 @@
+ 
+-cmake_minimum_required(VERSION 2.8.12)
++cmake_minimum_required(VERSION 3.18)
+ project(cudnn_test)
+ include(../use_cpp_11.cmake)
+-
++enable_language(CUDA)
++set(CMAKE_CUDA_ARCHITECTURES "50")
+ # Override the FindCUDA.cmake setting to avoid duplication of host flags if using a toolchain:
+ option(CUDA_PROPAGATE_HOST_FLAGS "Propage C/CXX_FLAGS and friends to the host compiler via -Xcompile" OFF)
+-find_package(CUDA 7.5 REQUIRED)
+ set(CUDA_HOST_COMPILATION_CPP ON)
+-list(APPEND CUDA_NVCC_FLAGS "-arch=sm_50;-std=c++11;-D__STRICT_ANSI__")
+ add_definitions(-DDLIB_USE_CUDA)
+ 
+ include(find_cudnn.txt)
+ 
+ if (cudnn_include AND cudnn)
+    include_directories(${cudnn_include})
+-   cuda_add_library(cudnn_test STATIC ../../cuda/cudnn_dlibapi.cpp ${cudnn} )
++   add_library(cudnn_test STATIC ../../cuda/cudnn_dlibapi.cpp ${cudnn} )
+    enable_cpp11_for_target(cudnn_test)
+ endif()
+-- 
+2.17.1
+

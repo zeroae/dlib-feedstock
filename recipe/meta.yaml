@@ -11,9 +11,11 @@ source:
   sha256: e79d8e14171b8446d6b5434d7dc3b44a23ca05c8f99266acaf731cc7b268edb6
 
   patches:
-    - lapack_sgetrf.patch      # [unix]
-    - cxx11_detection.patch
-    - setup_cmake_args.patch
+    - 0001-lapack_sgetrf.patch      # [unix]
+    - 0002-cxx11_detection.patch
+    - 0003-setup_cmake_args.patch
+    - 0004-Update-CUDA-tests.patch
+    - 0005-Update-CUDA-CMakeLists.patch
 
 build:
   skip: true  # [win and py<35]
@@ -75,6 +77,16 @@ test:
   commands:
     - python -m pip check
     - python -m pytest tools/python/test
+
+outputs:
+  - name: {{ name }}
+  - name: {{ name }}-cuda  # [cuda_compiler_version != "None"]
+  - name: {{ name }}-cpu   # [cuda_compiler_version == "None"]
+    script: noop.py
+    requirements:
+      run:
+        - {{ pin_subpackage(name, exact=true) }}
+
 
 about:
   home: http://dlib.net

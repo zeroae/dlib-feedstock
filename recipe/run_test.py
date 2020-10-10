@@ -47,6 +47,7 @@ def _load_image_using_pillow(path):
     return np.array(Image.open(path))
 
 
+@unittest.skipIf("No GPU on CI servers", os.environ["cuda_compiler_version"] == "None")
 class TestDlib(unittest.TestCase):
 
     @classmethod
@@ -108,4 +109,6 @@ class TestDlib(unittest.TestCase):
         self.assertTrue(os.path.exists('./test.svm'))
 
 if __name__ == '__main__':
+    from pprint import pprint
+    pprint({k:v for k,v in os.environ.items()})
     unittest.main()

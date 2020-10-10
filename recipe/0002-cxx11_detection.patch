@@ -1,0 +1,47 @@
+From 6a72a216f4dd2474ac5f2d48e267130692667054 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Patrick=20Sodr=C3=A9?= <psodre@gmail.com>
+Date: Sat, 10 Oct 2020 01:53:22 -0400
+Subject: [PATCH 2/5] cxx11_detection
+
+---
+ dlib/cmake_utils/use_cpp_11.cmake | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/dlib/cmake_utils/use_cpp_11.cmake b/dlib/cmake_utils/use_cpp_11.cmake
+index e49e30f2..d9706a96 100644
+--- a/dlib/cmake_utils/use_cpp_11.cmake
++++ b/dlib/cmake_utils/use_cpp_11.cmake
+@@ -71,18 +71,18 @@ else()
+ 
+       set(COMPILER_CAN_DO_CPP_11 1)
+       # Tell cmake that we need C++11 for dlib
+-      target_compile_features(${target_name} 
+-         PUBLIC 
+-            cxx_rvalue_references
+-            cxx_variadic_templates
+-            cxx_lambdas
+-            cxx_defaulted_move_initializers
+-            cxx_delegating_constructors
+-            cxx_thread_local
+-            cxx_constexpr
+-            # cxx_decltype_incomplete_return_types  # purposfully commented out because cmake errors out on this when using visual studio and cmake 3.8.0
+-            cxx_auto_type
+-         )
++#       target_compile_features(${target_name} 
++#          PUBLIC 
++#             cxx_rvalue_references
++#             cxx_variadic_templates
++#             cxx_lambdas
++#             cxx_defaulted_move_initializers
++#             cxx_delegating_constructors
++#             cxx_thread_local
++#             cxx_constexpr
++#             # cxx_decltype_incomplete_return_types  # purposfully commented out because cmake errors out on this when using visual studio and cmake 3.8.0
++#             cxx_auto_type
++#          )
+ 
+       if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+          # Sometimes clang will lie and report that it supports C++11 when
+-- 
+2.17.1
+
