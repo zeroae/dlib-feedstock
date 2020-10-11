@@ -84,8 +84,11 @@ outputs:
   - name: {{ name }}-cpu   # [cuda_compiler_version == "None"]
     script: noop.py
     requirements:
+      host:
+        - python
       run:
-        - {{ pin_subpackage(name, exact=true) }}
+        - python
+        - {{ pin_subpackage(name, exact=True) }}
 
 
 about:
