@@ -26,6 +26,9 @@ def install():
             "-DPNG_INCLUDE_DIR={PREFIX}/include\n"
             "-Dsqlite_path={PREFIX}/include\n"
         ).format(**os.environ)
+    cmake_args += (
+        "-DCMAKE_CUDA_ARCHITECTURES='30;35;50;52;61;70;75'\n"
+    )
 
     env = dict(os.environ)
     env[PATCH_ENV_VAR] = cmake_args
